@@ -1,4 +1,4 @@
-﻿namespace Library.Responses;
+﻿namespace ShopApi.Responses;
 
 public class ApiResponse<T>
 {
