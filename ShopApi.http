@@ -1,6 +1,6 @@
-@Library_HostAddress = http://localhost:5188
+@ShopApi_HostAddress = http://localhost:5188
 
-GET {{Library_HostAddress}}/weatherforecast/
+GET {{ShopApi_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
