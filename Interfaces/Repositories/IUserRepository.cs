@@ -9,7 +9,7 @@ public interface IUserRepository
     Task<IEnumerable<User>> GetFilteredUsersAsync(string? email, string? name);
     Task AddAsync(User user);
     void Update(User user);
-    void Delete(User user);
+    Task Delete(User user);
     
     Task<User?> GetByUsernameAsync(string username);
     Task<bool> ExistsAsync(string username);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShopApi.Entites;
+using ShopApi.Enums;
 
 namespace ShopApi.Configuration;
 
@@ -24,6 +25,17 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne(r => r.User)
             .HasForeignKey(r => r.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        // Добавляем админа
+        builder.HasData(new User
+        {
+            Id = 1,
+            FirstName = "Admin",
+            LastName = "Admin",
+            Email = "admin@shop.com",
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!"), // Хешируем пароль
+            Role = Role.Admin
+        });
     }
 }
 

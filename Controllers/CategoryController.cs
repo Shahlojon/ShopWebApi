@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using ShopApi.Responses;
 using Microsoft.AspNetCore.Mvc;
 using ShopApi.Dto.Magazine.CategoryDtos;
@@ -7,6 +8,7 @@ namespace ShopApi.Controllers;
 
 [Route("api/categories")]
 [ApiController]
+[Authorize]
 public class CategoryController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
