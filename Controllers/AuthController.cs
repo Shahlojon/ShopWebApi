@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShopApi.Controllers;
 using ShopApi.Dto.Authorize;
 using ShopApi.Enums;
 using ShopApi.Interfaces.Services;
@@ -9,7 +10,7 @@ namespace Presentation.Controllers;
 
 [Route("api/auth")]
 [ApiController]
-public class AuthController : ControllerBase
+public class AuthController : ApiBaseController
 {
     private readonly IAuthService _authService;
 

@@ -8,6 +8,9 @@ using ShopApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Prometheus;
+using ShopApi.Entites;
+using ShopApi.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,10 +22,19 @@ builder.Services.AddDbContext<ProductDbContext>(options =>
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+builder.Services.AddScoped<IProductFileRepository, ProductFileRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IUserProfileService, UserProfileService>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 
 builder.Services.AddAuthentication(
@@ -98,8 +110,13 @@ if (app.Environment.IsDevelopment())
     });}
 
 app.UseHttpsRedirection();
-
+app.UseFileServer();
 app.UseAuthorization();
+// Включаем метрики для HTTP-запросов
+app.UseHttpMetrics();
+
+// Добавляем эндпоинт /metrics для Prometheus
+app.MapMetrics();
 
 app.MapControllers();
 

@@ -5,10 +5,11 @@ namespace ShopApi.Interfaces.Repositories;
 
 public interface IOrderRepository
 {
-    Task<Order> GetByIdAsync(Guid id);
+    Task<Order> GetByIdAsync(int id);
     Task<IEnumerable<Order>> GetAllAsync();
-    Task<IEnumerable<Order>> GetFilteredOrdersAsync(Guid? userId, Status status);
+    Task<IEnumerable<Order>> GetAllAsync(int userId);
+    Task<IEnumerable<Order>> GetFilteredOrdersAsync(int? userId, Status? status);
     Task AddAsync(Order order);
-    void Update(Order order);
-    void Delete(Order order);
+    Task UpdateAsync(Order order);
+    Task Delete(Order order);
 }

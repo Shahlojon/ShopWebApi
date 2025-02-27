@@ -9,7 +9,7 @@ namespace ShopApi.Controllers;
 [Route("api/categories")]
 [ApiController]
 [Authorize]
-public class CategoryController : ControllerBase
+public class CategoryController : ApiBaseController
 {
     private readonly ICategoryService _categoryService;
 

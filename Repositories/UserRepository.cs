@@ -9,7 +9,9 @@ public class UserRepository(ProductDbContext context) : IUserRepository
 {
     public async Task<User> GetByIdAsync(int id)
     {
-        return await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        return await context.Users
+            .Include(u=>u.UserProfile)
+            .FirstOrDefaultAsync(u => u.Id == id);
     }
 
     public async Task<IEnumerable<User>> GetAllAsync()
