@@ -11,7 +11,7 @@ namespace ShopApi.Controllers
     public class ProductsController(IProductService productService) : ApiBaseController
     {
         [HttpGet]
-        public async Task<IActionResult> GetProducts(GetProductFilterRequestQuery request)
+        public async Task<IActionResult> GetProducts([FromQuery]GetProductFilterRequestQuery request)
         {
             return Ok(new ApiResponse<IEnumerable<ProductFilterResponseDto>>(await productService.GetProductsAsync(request)));
         }
@@ -23,7 +23,7 @@ namespace ShopApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductRequestDto request)
+        public async Task<IActionResult> CreateProduct([FromForm] ProductRequestDto request)
         {
             return Ok(new ApiResponse<bool>(await productService.CreateProductAsync(request), "Product created successfully"));
         }

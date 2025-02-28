@@ -6,6 +6,9 @@ namespace ShopApi.Interfaces.Services;
 
 public interface IOrderService
 {
-    Task<IEnumerable<OrderDto>> GetListAsync(int userId);
-    Task<bool> CreateAsync(int userId, Status status, List<OrderItemRequestDto> orderItemRequest);
+    Task<OrderResponseDto> GetOrderByIdAsync(int id);
+    Task<IEnumerable<OrderResponseDto>> GetAllOrdersAsync();
+    Task<int> CreateOrderAsync(OrderRequestDto orderDto);
+    Task<bool> UpdateOrderStatusAsync(int id, Status status);
+    Task<bool> DeleteOrderAsync(int id);
 }

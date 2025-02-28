@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using ShopApi.Dto;
+using ShopApi.Dto.UserDtos;
 using ShopApi.Dto.UserDtos.Requests;
 using ShopApi.Entites;
 using ShopApi.Interfaces.Repositories;
@@ -11,7 +12,7 @@ public class UserProfileService(IUserProfileRepository repository,
     IUserRepository userRepository, 
     IFileService fileService):IUserProfileService
 {
-    public async Task<UserProfile> CreateAsync(UserProfileRequestDto requestDto)
+    public async Task<UserProfileResponseDto> CreateAsync(UserProfileRequestDto requestDto)
     {
         if (await repository.ExistAsync(requestDto.UserId))
             throw new ValidationException(
@@ -27,10 +28,17 @@ public class UserProfileService(IUserProfileRepository repository,
             UserId = requestDto.UserId
         };
         await repository.AddAsync(userProfile);
-        return userProfile;
+            return new UserProfileResponseDto()
+            {
+                 Id = userProfile.Id,
+                 UserId = userProfile.UserId,
+                 Url = userProfile.Url,
+                 Size = userProfile.Size,
+                 Name = userProfile.Name
+            };
     }
 
-    public async Task<UserProfile> UpdateAsync(UserProfileRequestDto requestDto)
+    public async Task<UserProfileResponseDto> UpdateAsync(UserProfileRequestDto requestDto)
     {
         UserProfile userProfile = await repository.GetByUserIdAsync(requestDto.UserId);
         await fileService.RemoveAsync(userProfile.Url);
@@ -40,7 +48,14 @@ public class UserProfileService(IUserProfileRepository repository,
         userProfile.Extension = fileDto.Extension;
         userProfile.Size = fileDto.Size;
         await repository.UpdateAsync(userProfile);
-        return userProfile;
+        return new UserProfileResponseDto()
+        {
+            Id = userProfile.Id,
+            UserId = userProfile.UserId,
+            Url = userProfile.Url,
+            Size = userProfile.Size,
+            Name = userProfile.Name
+        };
 
     }
 
@@ -51,8 +66,24 @@ public class UserProfileService(IUserProfileRepository repository,
         await fileService.RemoveAsync(userProfile.Url);
         return true;
     }
-    public async Task<User> GetProfileAsync(int userId)
+    public async Task<UserResponseDto> GetProfileAsync(int userId)
     {
-        return await userRepository.GetByIdAsync(userId);
+        var user = await userRepository.GetByIdAsync(userId);
+        return new UserResponseDto()
+        {
+            Id = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            Role  = user.Role,
+            UserProfile = user.UserProfile!=null? new UserProfileResponseDto()
+            {
+                Id = user.UserProfile.Id,
+                UserId = user.UserProfile.UserId,
+                Url = user.UserProfile.Url,
+                Size = user.UserProfile.Size,
+                Name = user.UserProfile.Name
+            }: new UserProfileResponseDto()
+        };
     }
 }

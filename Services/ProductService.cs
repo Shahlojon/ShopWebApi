@@ -24,12 +24,20 @@ public class ProductService(IProductRepository productRepository, IProductFileRe
             Id = product.Id,
             Name = product.Name,
             Price = product.Price,
+            Description = product.Description,
             Category = new CategoryDto
             {
                 Id = product.Category.Id,
                 Name = product.Category.Name,
                 ParentCategoryId = product.Category.ParentCategoryId
-            }
+            },
+            Files = product.ProductFiles.Select(f=>new FileDto()
+            {
+                Url = f.Url,
+                Size = f.Size,
+                Extension = f.Extension,
+                Name = f.Name
+            }).ToList()
         });
     }
 
